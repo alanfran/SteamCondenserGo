@@ -1,9 +1,13 @@
-package servers
+package test
 
-import "testing"
+import (
+	"testing"
+
+	servers "github.com/alanfran/SteamCondenserGo"
+)
 
 func TestGoldSrc(t *testing.T) {
-	goldServer := GoldServer{
+	goldServer := servers.GoldServer{
 		Address: "74.91.113.128:27015",
 	}
 

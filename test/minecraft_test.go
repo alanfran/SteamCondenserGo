@@ -1,11 +1,13 @@
-package servers
+package test
 
 import (
 	"testing"
+
+	servers "github.com/alanfran/SteamCondenserGo"
 )
 
 func TestMinecraft(t *testing.T) {
-	minecraftServer := MinecraftServer{
+	minecraftServer := servers.MinecraftServer{
 		Address: "178.32.48.244:25565",
 	}
 
