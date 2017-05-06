@@ -1,6 +1,6 @@
 package servers
 
-import ("testing")
+import "testing"
 
 func TestGoldSrc(t *testing.T) {
 	goldServer := GoldServer{

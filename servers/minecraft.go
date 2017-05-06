@@ -1,21 +1,21 @@
 package servers
 
 import (
-	"SteamCondenserGo/helpers"
 	"bytes"
 	"encoding/binary"
 	"encoding/hex"
 	"fmt"
 	"net"
-//	"time"
 	"strconv"
+
+	"github.com/alanfran/SteamCondenserGo/helpers"
 )
 
 type MinecraftServer server
 
 const (
-	magic1 = 0xFE
-	magic2 = 0xFD
+	magic1    = 0xFE
+	magic2    = 0xFD
 	statistic = 0x00
 	handshake = 0x09
 	sessionId = 13371
@@ -79,7 +79,7 @@ func (self MinecraftServer) GetInfo() (GameServerResponse, error) {
 		return resp, err
 	}
 
-	fmt.Println("Server resposne",basicInfo)
+	fmt.Println("Server resposne", basicInfo)
 	return resp, err
 }
 
@@ -113,18 +113,6 @@ func getStatus(challengeCode string) (mcServerResponse, error) {
 		return response, err
 	}
 
-//	reader := helpers.Init(4, data)
-//	response.Type = reader.ReadByte()
-//	response.SessionId = reader.ReadShort()
-//	response.Motd = reader.ReadNullTermString()
-//	response.GameType = reader.ReadNullTermString()
-//	response.Map = reader.ReadNullTermString()
-//	response.NumPlayers = reader.ReadNullTermString()
-//	response.MaxPlayers = reader.ReadNullTermString()
-//	response.HostPort = reader.ReadShort()
-//	response.HostIp = reader.ReadNullTermString()
-//
-//	fmt.Println(response)
 	return response, nil
 }
 

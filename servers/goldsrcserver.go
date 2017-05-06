@@ -1,30 +1,63 @@
 package servers
 
 import (
-	"SteamCondenserGo/helpers"
-	"net"
 	"fmt"
+	"net"
+
+	"github.com/alanfran/SteamCondenserGo/helpers"
 )
 
 type GoldServer server
 
 type serverResponse struct {
-	Header     byte
-	Protocol   byte
-	Hostname   string
-	Map        string
-	Folder     string
-	AppId      int64
-	Game       string
-	NumPlayers byte
-	MaxPlayers byte
-	Bots       byte
-	ServerType byte
-	Enviorment byte
-	Visibility byte
-	Vac        byte
+	Header      byte
+	Protocol    byte
+	Hostname    string
+	Map         string
+	Folder      string
+	AppId       int64
+	Game        string
+	NumPlayers  byte
+	MaxPlayers  byte
+	Bots        byte
+	ServerType  byte
+	Environment byte
+	Visibility  byte
+	Vac         byte
 }
 
+// GoldServerResponse stores the results of a Gold Source server query.
+type GoldServerResponse struct {
+	Hostname   string
+	Map        string
+	Game       string
+	Players    int
+	MaxPlayers int
+	Bots       int
+}
+
+// QueryGoldServer takes a server address and returns either a response or an error.
+func QueryGoldServer(address string) (GoldServerResponse, error) {
+	server := GoldServer{Address: address}
+
+	info, err := server.GetInfo()
+	if err != nil {
+		return GoldServerResponse{}, err
+	}
+
+	response := GoldServerResponse{
+		Hostname:   info.Hostname,
+		Map:        info.Map,
+		Game:       info.Game,
+		Players:    int(info.NumPlayers),
+		MaxPlayers: int(info.MaxPlayers),
+		Bots:       int(info.Bots),
+	}
+
+	return response, err
+}
+
+// GetInfo queries a GoldServer and returns either a response or an error.
 func (model GoldServer) GetInfo() (serverResponse, error) {
 	resp := serverResponse{}
 
@@ -72,16 +105,16 @@ func (resp *serverResponse) bufferToResponse(b []byte) {
 	resp.MaxPlayers = reader.ReadByte()
 	resp.Bots = reader.ReadByte()
 	resp.ServerType = reader.ReadByte()
-	resp.Enviorment = reader.ReadByte()
+	resp.Environment = reader.ReadByte()
 	resp.Visibility = reader.ReadByte()
 	resp.Vac = reader.ReadByte()
 }
-
 
 func createPacket() []byte {
 	return []byte("\xFF\xFF\xFF\xFF")
 }
 
+// PrintDebug prints the fields of a serverResponse into the console.
 func (self serverResponse) PrintDebug() {
 	fmt.Println("Header: ", self.Header)
 	fmt.Println("Protocol: ", self.Protocol)
