@@ -9,7 +9,7 @@ import (
 
 type GoldServer server
 
-type serverResponse struct {
+type GoldServerResponse struct {
 	Header      byte
 	Protocol    byte
 	Hostname    string
@@ -26,27 +26,17 @@ type serverResponse struct {
 	Vac         byte
 }
 
-// GoldServerResponse stores the results of a Gold Source server query.
-type GoldServerResponse struct {
-	Hostname   string
-	Map        string
-	Game       string
-	Players    int
-	MaxPlayers int
-	Bots       int
-}
-
 // QueryGoldServer takes a server address and returns either a response or an error.
-func QueryGoldServer(address string) (GoldServerResponse, error) {
+func QueryGoldServer(address string) (Response, error) {
 	server := GoldServer{Address: address}
 
 	info, err := server.GetInfo()
 	if err != nil {
-		return GoldServerResponse{}, err
+		return Response{}, err
 	}
 
-	response := GoldServerResponse{
-		Hostname:   info.Hostname,
+	response := Response{
+		Name:       info.Hostname,
 		Map:        info.Map,
 		Game:       info.Game,
 		Players:    int(info.NumPlayers),
@@ -58,8 +48,8 @@ func QueryGoldServer(address string) (GoldServerResponse, error) {
 }
 
 // GetInfo queries a GoldServer and returns either a response or an error.
-func (model GoldServer) GetInfo() (serverResponse, error) {
-	resp := serverResponse{}
+func (model GoldServer) GetInfo() (GoldServerResponse, error) {
+	resp := GoldServerResponse{}
 
 	serverAddr, err := net.ResolveUDPAddr("udp", model.Address)
 	if err != nil {
@@ -91,7 +81,7 @@ func (model GoldServer) GetInfo() (serverResponse, error) {
 	return resp, nil
 }
 
-func (resp *serverResponse) bufferToResponse(b []byte) {
+func (resp *GoldServerResponse) bufferToResponse(b []byte) {
 
 	reader := helpers.Init(4, b)
 	resp.Header = reader.ReadByte()
@@ -115,7 +105,7 @@ func createPacket() []byte {
 }
 
 // PrintDebug prints the fields of a serverResponse into the console.
-func (self serverResponse) PrintDebug() {
+func (self GoldServerResponse) PrintDebug() {
 	fmt.Println("Header: ", self.Header)
 	fmt.Println("Protocol: ", self.Protocol)
 	fmt.Println("Hostname: ", self.Hostname)

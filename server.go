@@ -4,7 +4,7 @@ type server struct {
 	Address string
 }
 
-type GameServerResponse struct {
+type Response struct {
 	Name       string
 	Map        string
 	Game       string

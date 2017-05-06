@@ -56,8 +56,8 @@ type mcServerResponse struct {
 
 var conn *net.UDPConn
 
-func (self MinecraftServer) GetInfo() (GameServerResponse, error) {
-	resp := GameServerResponse{}
+func (self MinecraftServer) GetInfo() (Response, error) {
+	resp := Response{}
 	serverAddr, err := net.ResolveUDPAddr("udp", self.Address)
 	if err != nil {
 		return resp, err
