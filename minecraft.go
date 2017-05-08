@@ -70,7 +70,7 @@ func (self MinecraftServer) GetInfo() (Response, error) {
 	}
 	defer conn.Close()
 
-	conn.SetDeadline(time.Now().Add(time.Second * 3))
+	conn.SetDeadline(time.Now().Add(time.Second * 1))
 
 	code, err := requestChallengeCode()
 	if err != nil {

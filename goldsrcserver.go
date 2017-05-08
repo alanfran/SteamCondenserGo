@@ -68,7 +68,7 @@ func (model GoldServer) GetInfo() (GoldServerResponse, error) {
 	send := createPacket()
 	send = append(send, query...)
 
-	socket.SetDeadline(time.Now().Add(time.Second * 3))
+	socket.SetDeadline(time.Now().Add(time.Second * 1))
 
 	_, err = socket.Write(send)
 	if err != nil {
