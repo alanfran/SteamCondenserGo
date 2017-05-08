@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net"
 	"strconv"
+	"time"
 
 	"github.com/alanfran/SteamCondenserGo/helpers"
 )
@@ -68,6 +69,8 @@ func (self MinecraftServer) GetInfo() (Response, error) {
 		return resp, err
 	}
 	defer conn.Close()
+
+	conn.SetDeadline(time.Now().Add(time.Second * 3))
 
 	code, err := requestChallengeCode()
 	if err != nil {

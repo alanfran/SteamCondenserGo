@@ -3,12 +3,14 @@ package servers
 import (
 	"fmt"
 	"net"
+	"time"
 
 	"github.com/alanfran/SteamCondenserGo/helpers"
 )
 
 type GoldServer server
 
+// GoldServerResponse implements the A2S_INFO query result.
 type GoldServerResponse struct {
 	Header      byte
 	Protocol    byte
@@ -65,6 +67,8 @@ func (model GoldServer) GetInfo() (GoldServerResponse, error) {
 	query := helpers.CreateNullTermByteString("TSource Engine Query")
 	send := createPacket()
 	send = append(send, query...)
+
+	socket.SetDeadline(time.Now().Add(time.Second * 3))
 
 	_, err = socket.Write(send)
 	if err != nil {
