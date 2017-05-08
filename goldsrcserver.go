@@ -72,13 +72,13 @@ func (model GoldServer) GetInfo() (GoldServerResponse, error) {
 
 	_, err = socket.Write(send)
 	if err != nil {
-		panic(err)
+		return resp, err
 	}
 
 	data := make([]byte, 4096)
 	_, _, err = socket.ReadFromUDP(data)
 	if err != nil {
-		panic(err)
+		return resp, err
 	}
 
 	resp.bufferToResponse(data)
